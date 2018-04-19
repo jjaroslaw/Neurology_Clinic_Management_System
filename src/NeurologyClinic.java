@@ -5,6 +5,9 @@ import clinic.Clinic;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NeurologyClinic extends Clinic{
 	
@@ -18,6 +21,18 @@ public class NeurologyClinic extends Clinic{
 	JButton addDoctor = new JButton("Add doctor");
 	JButton addPatientButton = new JButton("Add patient to Database");
 	JButton addHealthStaffButton = new JButton("Add health staff to Database");
+	
+	JTextField nameField;
+	JTextField surnameField;
+	JTextField personalNumberField;
+	JTextField dateOfBirthField;
+	JTextField cityField;
+	JTextField postalCodeField;
+	JTextField streetAndHouseNumberField;
+	JTextField phoneField;
+	JTextField licenceNumberField;
+	JTextField dateOfEmploymentField;
+	JLabel wrongData;
 	
 	
 	JButton mainMenuButton = new JButton("Main Menu");
@@ -43,6 +58,8 @@ public class NeurologyClinic extends Clinic{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panel, "Main Panel");
+				clearAddDoctorTextFields();
+				wrongData.setVisible(false);
 			}
 		});
 		
@@ -68,43 +85,36 @@ public class NeurologyClinic extends Clinic{
 		JLabel addDoctorTitle = new JLabel("Add doctor");
 		addDoctorTitle.setFont(new Font("Arial", Font.BOLD, 37));
 		JLabel addName = new JLabel("Name:");
-		JTextField nameField = new JTextField();
+		nameField = new JTextField();
 		JLabel addSurname = new JLabel("Surname:");
-		JTextField surnameField = new JTextField();
+		surnameField = new JTextField();
 		JLabel addPersonalNumber = new JLabel("Personal Number:");
-		JTextField personalNumberField = new JTextField();
+		personalNumberField = new JTextField();
 		JLabel addDateOfBirth = new JLabel("Date of birth (yyyy-mm-dd):");
-		JTextField dateOfBirthField = new JTextField();
+		dateOfBirthField = new JTextField();
 		JLabel addCountryOfBirth = new JLabel("Country of birth:");
 		JComboBox countryOfBirthCB = new JComboBox(clinic.selectCountries().toArray());
 		JLabel addCity = new JLabel("City:");
-		JTextField cityField = new JTextField();
+		cityField = new JTextField();
 		JLabel addPostalCode = new JLabel("Postal code (xx-xxx):");
-		JTextField postalCodeField = new JTextField();
+		postalCodeField = new JTextField();
 		JLabel addStreetAndHouseNumber = new JLabel("Street and house number:");
-		JTextField streetAndHouseNumberField = new JTextField();
+		streetAndHouseNumberField = new JTextField();
 		JLabel addPhone = new JLabel("Phone number:");
-		JTextField phoneField = new JTextField();
+		phoneField = new JTextField();
 		JLabel addSex = new JLabel("Sex:");
 		JComboBox sexCB = new JComboBox(clinic.selectSex().toArray());
 		JLabel addLicenceNumber = new JLabel("Licence number:");
-		JTextField licenceNumberField = new JTextField();
+		licenceNumberField = new JTextField();
 		JLabel addSpecialty = new JLabel("Specialty:");
 		JComboBox specialtyCB = new JComboBox(clinic.selectSpecialty().toArray());
 		JLabel addDateOfEmployment = new JLabel("Date of employment (yyyy-mm-dd):");
-		JTextField dateOfEmploymentField = new JTextField();
-		/*
-		textFieldAdjustment(nameField);
-		textFieldAdjustment(surnameField);
-		textFieldAdjustment(personalNumberField);
-		textFieldAdjustment(dateOfBirthField);
-		textFieldAdjustment(cityField);
-		textFieldAdjustment(postalCodeField);
-		textFieldAdjustment(streetAndHouseNumberField);
-		textFieldAdjustment(phoneField);
-		textFieldAdjustment(sexField);
-		textFieldAdjustment(licenceNumberField);
-		textFieldAdjustment(dateOfEmploymentField);*/
+		dateOfEmploymentField = new JTextField();
+		
+		wrongData = new JLabel("Wrong data! Check everything.");
+		wrongData.setForeground(Color.RED);
+		wrongData.setVisible(false);
+		
 		
 		GroupLayout doctorPanelLayout = new GroupLayout(doctorPanel);
 		doctorPanel.setLayout(doctorPanelLayout);
@@ -132,7 +142,7 @@ public class NeurologyClinic extends Clinic{
 						.addComponent(addDateOfEmployment, 10, 10, Short.MAX_VALUE).addGap(10,10,10).addComponent(dateOfEmploymentField, 10, 10, Short.MAX_VALUE).addGap(247, 247, Short.MAX_VALUE))
 				.addGap(30, 30, Short.MAX_VALUE)
 				.addGroup(doctorPanelLayout.createSequentialGroup()
-						.addGap(100, 100, Short.MAX_VALUE).addComponent(addDoctor).addComponent(mainMenuButton))
+						.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addDoctor).addComponent(mainMenuButton))
 				);
 		
 		doctorPanelLayout.setVerticalGroup(doctorPanelLayout.createSequentialGroup()
@@ -151,19 +161,25 @@ public class NeurologyClinic extends Clinic{
 						.addComponent(addDateOfEmployment, 20, 20, 23).addComponent(dateOfEmploymentField, 10, 10, 23))
 				.addGap(30, 30, Short.MAX_VALUE)
 				.addGroup(doctorPanelLayout.createParallelGroup()
-						.addComponent(addDoctor).addComponent(mainMenuButton))
+						.addComponent(wrongData).addComponent(addDoctor).addComponent(mainMenuButton))
 				);
 		//Add doctor button in add doctor panel
 		addDoctor.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				insertDoctor(nameField.getText(), surnameField.getText(), personalNumberField.getText(), dateOfBirthField.getText(), countryOfBirthCB.getSelectedItem().toString(), cityField.getText(),
-						postalCodeField.getText(), streetAndHouseNumberField.getText(), phoneField.getText(), sexCB.getSelectedItem().toString(), licenceNumberField.getText(),
-						specialtyCB.getSelectedItem().toString(), dateOfEmploymentField.getText());
+					if (insertDoctor(nameField.getText(), surnameField.getText(), personalNumberField.getText(), dateOfBirthField.getText(), countryOfBirthCB.getSelectedItem().toString(), cityField.getText(),
+							postalCodeField.getText(), streetAndHouseNumberField.getText(), phoneField.getText(), sexCB.getSelectedItem().toString(), licenceNumberField.getText(),
+							specialtyCB.getSelectedItem().toString(), dateOfEmploymentField.getText())) {
+						wrongData.setVisible(false);
+					}
+					else {
+						wrongData.setVisible(true);
+					}
 			}
 		});
 		
+		clinic.closeConnection();
 		frame.setBounds(300, 200, 930, 400);
 		frame.setMinimumSize(new Dimension(930, 400));
 		frame.add(panel);
@@ -172,17 +188,33 @@ public class NeurologyClinic extends Clinic{
 		
 	}
 	
-	public void textFieldAdjustment(Object textField) {
-		((Container) textField).setFont(new Font("Arial", Font.BOLD, 20));
-		((AbstractButton) textField).setHorizontalAlignment(SwingConstants.RIGHT);
-		((Window) textField).setSize(209, 43);
+	// Clear text fields in Add doctor panel
+	public void clearAddDoctorTextFields() {
+		List<JTextField> addDoctorFieldsList = new ArrayList<JTextField>();
+		addDoctorFieldsList.add(nameField);
+		addDoctorFieldsList.add(surnameField);
+		addDoctorFieldsList.add(personalNumberField);
+		addDoctorFieldsList.add(dateOfBirthField);
+		addDoctorFieldsList.add(cityField);
+		addDoctorFieldsList.add(postalCodeField);
+		addDoctorFieldsList.add(streetAndHouseNumberField);
+		addDoctorFieldsList.add(phoneField);
+		addDoctorFieldsList.add(licenceNumberField);
+		addDoctorFieldsList.add(dateOfEmploymentField);
+		
+		for (int i = 0; i<addDoctorFieldsList.size(); i++) {
+			addDoctorFieldsList.get(i).setText("");
+			i++;
+		}
 	}
+	
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new NeurologyClinic();
+				NeurologyClinic a = new NeurologyClinic();
+				a.clearAddDoctorTextFields();
 			}
 		});
 	}
