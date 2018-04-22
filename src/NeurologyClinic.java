@@ -139,7 +139,7 @@ public class NeurologyClinic extends Clinic{
 				patientPanel.setBackground(new Color(228, 228, 228));
 				
 				patientPanelLayout.setHorizontalGroup(patientPanelLayout.createParallelGroup()
-						.addComponent(addPatientTitle)//
+						.addComponent(addPatientTitle)
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(patientPanelLayout.createParallelGroup()
 								.addGroup(patientPanelLayout.createSequentialGroup()
@@ -259,8 +259,23 @@ public class NeurologyClinic extends Clinic{
 			}
 		});
 		
+		//Add doctor button in add doctor panel
+				addPatient.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+							if (insertPatient(nameField.getText(), surnameField.getText(), personalNumberField.getText(), dateOfBirthField.getText(), countryOfBirthCB.getSelectedItem().toString(), cityField.getText(),
+									postalCodeField.getText(), streetAndHouseNumberField.getText(), phoneField.getText(), sexCB.getSelectedItem().toString(), dateOfRegistrationField.getText())) {
+								wrongData.setVisible(false);
+							}
+							else {
+								wrongData.setVisible(true);
+							}
+					}
+				});
+		
 		// Patient Panel
-		addPatientTitle = new JLabel("Add doctor");
+		addPatientTitle = new JLabel("Add patient");
 		addPatientTitle.setFont(new Font("Arial", Font.BOLD, 37));
 		addDateOfRegistration = new JLabel("Date of registration (yyyy-mm-dd):");
 		dateOfRegistrationField = new JTextField();

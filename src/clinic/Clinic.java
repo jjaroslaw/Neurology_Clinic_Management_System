@@ -68,6 +68,31 @@ public class Clinic {
 		return true;
 	}
 	
+	public boolean insertPatient(String name, String surname, String personalNumber, String dateOfBirth, String countryOfBirth, String city,
+			String postalCode, String streetAndHouseNumber, String phone, String sex, String dateOfRegistration) {
+		try {
+			CallableStatement prepStmt = (CallableStatement) conn.prepareCall(
+					"call insert_patient(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?);");
+			prepStmt.setString(1, name);
+			prepStmt.setString(2, surname);
+			prepStmt.setString(3, personalNumber);
+			prepStmt.setString(4, dateOfBirth);
+			prepStmt.setString(5, countryOfBirth);
+			prepStmt.setString(6, city);
+			prepStmt.setString(7, postalCode);
+			prepStmt.setString(8, streetAndHouseNumber);
+			prepStmt.setString(9, phone);
+			prepStmt.setString(10, sex);
+			prepStmt.setString(11, dateOfRegistration);
+			prepStmt.execute();
+		}
+		catch(SQLException e) {
+			System.err.println("Patient insertion problem.");
+			return false;
+		}
+		return true;
+	}
+	
 	public void closeConnection() {
 		try {
 			conn.close();
