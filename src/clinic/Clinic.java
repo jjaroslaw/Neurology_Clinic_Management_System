@@ -1,20 +1,14 @@
 package clinic;
 
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
-
-
-//import model.Doctor;
 
 public class Clinic {
 	public static final String DB_URL = "jdbc:mysql://localhost:3306/neurology_clinic";
@@ -93,6 +87,32 @@ public class Clinic {
 		return true;
 	}
 	
+	public boolean insertSupportStaff(String name, String surname, String personalNumber, String dateOfBirth, String countryOfBirth, String city,
+			String postalCode, String streetAndHouseNumber, String phone, String sex, String profession, String dateOfEmployment) {
+		try {
+			CallableStatement prepStmt = (CallableStatement) conn.prepareCall(
+					"call insert_support_staff(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?);");
+			prepStmt.setString(1, name);
+			prepStmt.setString(2, surname);
+			prepStmt.setString(3, personalNumber);
+			prepStmt.setString(4, dateOfBirth);
+			prepStmt.setString(5, countryOfBirth);
+			prepStmt.setString(6, city);
+			prepStmt.setString(7, postalCode);
+			prepStmt.setString(8, streetAndHouseNumber);
+			prepStmt.setString(9, phone);
+			prepStmt.setString(10, sex);
+			prepStmt.setString(11, profession);
+			prepStmt.setString(12, dateOfEmployment);
+			prepStmt.execute();
+		}
+		catch(SQLException e) {
+			System.err.println("Support Staff insertion problem.");
+			return false;
+		}
+		return true;
+	}
+	
 	public void closeConnection() {
 		try {
 			conn.close();
@@ -153,4 +173,21 @@ public class Clinic {
 			}
 			return specialtyList;
 		}
+	// Specialty list
+		public List<String> selectProfession(){
+			List<String> professionList = new ArrayList<String>();
+			try {
+				ResultSet result = stat.executeQuery("SELECT profession FROM profession_table;");
+				String profession;
+				while(result.next()) {
+					profession = result.getString("profession");
+					professionList.add(profession);
+				}
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return professionList;
+		}	
 }
