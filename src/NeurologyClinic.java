@@ -14,17 +14,28 @@ public class NeurologyClinic extends Clinic{
 	JFrame frame = new JFrame("Neurology Clinic");
 	
 	JPanel panel = new JPanel();
-	JPanel mainPanel = new JPanel();
+	JPanel signInPanel = new JPanel();
+	JPanel adminMainPanel = new JPanel();
 	JPanel doctorPanel = new JPanel();
 	JPanel patientPanel = new JPanel();
 	JPanel supportStaffPanel = new JPanel();
 	
+	JButton signInButton = new JButton("Sign in");
+	JButton signOutButton = new JButton("Sign out");
 	JButton addDoctorButton = new JButton("Add doctor to Database");
 	JButton addDoctor = new JButton("Add doctor");
 	JButton addPatientButton = new JButton("Add patient to Database");
 	JButton addPatient = new JButton("Add patient");
 	JButton addSupportStaffButton = new JButton("Add health staff to Database");
 	JButton addSupportStaff = new JButton("Add health staff");
+	
+	JLabel signInTitle;
+	JLabel login;
+	JTextField loginField;
+	JLabel password;
+	JTextField passwordField;
+	
+	JLabel adminTitle;
 	
 	JLabel addDoctorTitle;
 	JLabel addName;
@@ -55,6 +66,7 @@ public class NeurologyClinic extends Clinic{
 	JTextField dateOfEmploymentField;
 	JLabel wrongData;
 	
+	
 	JLabel addPatientTitle;
 	JLabel addDateOfRegistration;
 	JTextField dateOfRegistrationField;
@@ -63,18 +75,51 @@ public class NeurologyClinic extends Clinic{
 	JLabel addProfession;
 	JComboBox professionCB;
 	
-	JButton mainMenuButton = new JButton("Main Menu");
+	JButton adminMainMenuButton = new JButton("Main Menu");
 	CardLayout cl = new CardLayout();
 	
 	public NeurologyClinic() {
 		panel.setLayout(cl);
-		doctorPanel.add(mainMenuButton);
+		doctorPanel.add(adminMainMenuButton);
 		
-		panel.add(mainPanel, "Main Panel");
+		panel.add(signInPanel, "Sign in Panel");
+		panel.add(adminMainPanel, "Admin Main Panel");
 		panel.add(doctorPanel, "Adding Doctor Panel");
 		panel.add(patientPanel, "Adding Patient Panel");
 		panel.add(supportStaffPanel, "Adding Health Staff Panel");
-		cl.show(panel, "Main Panel");
+		cl.show(panel, "Sign in Panel");
+		
+		wrongData = new JLabel("Wrong data! Check everything.");
+		wrongData.setForeground(Color.RED);
+		wrongData.setVisible(false);
+		
+		signInButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 String login = loginField.getText();
+	             String password = passwordField.getText();
+	                if(login.equals("admin") && password.equals("admin")) {
+	                	cl.show(panel, "Admin Main Panel");
+	                	wrongData.setVisible(false);
+	                }
+	                else {
+	                    wrongData.setVisible(true);
+	                }
+			}
+			
+		});
+		
+		signOutButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cl.show(panel, "Sign in Panel");
+				loginField.setText("");
+				passwordField.setText("");
+			}
+			
+		});
 		
 		addDoctorButton.addActionListener(new ActionListener() {
 			@Override
@@ -106,7 +151,7 @@ public class NeurologyClinic extends Clinic{
 								.addComponent(addDateOfEmployment, 10, 10, Short.MAX_VALUE).addGap(10,10,10).addComponent(dateOfEmploymentField, 10, 10, Short.MAX_VALUE).addGap(247, 247, Short.MAX_VALUE))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(doctorPanelLayout.createSequentialGroup()
-								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addDoctor).addComponent(mainMenuButton))
+								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addDoctor).addComponent(adminMainMenuButton))
 						);
 				
 				doctorPanelLayout.setVerticalGroup(doctorPanelLayout.createSequentialGroup()
@@ -125,7 +170,7 @@ public class NeurologyClinic extends Clinic{
 								.addComponent(addDateOfEmployment, 20, 20, 23).addComponent(dateOfEmploymentField, 10, 10, 23))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(doctorPanelLayout.createParallelGroup()
-								.addComponent(wrongData).addComponent(addDoctor).addComponent(mainMenuButton))
+								.addComponent(wrongData).addComponent(addDoctor).addComponent(adminMainMenuButton))
 						);
 			}
 		});
@@ -160,7 +205,7 @@ public class NeurologyClinic extends Clinic{
 								.addComponent(addDateOfRegistration, 10, 10, Short.MAX_VALUE).addGap(10,10,10).addComponent(dateOfRegistrationField, 10, 10, Short.MAX_VALUE).addGap(247, 247, Short.MAX_VALUE))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(patientPanelLayout.createSequentialGroup()
-								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addPatient).addComponent(mainMenuButton))
+								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addPatient).addComponent(adminMainMenuButton))
 						);
 				
 				patientPanelLayout.setVerticalGroup(patientPanelLayout.createSequentialGroup()
@@ -179,7 +224,7 @@ public class NeurologyClinic extends Clinic{
 								.addComponent(addDateOfRegistration, 20, 20, 23).addComponent(dateOfRegistrationField, 10, 10, 23))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(patientPanelLayout.createParallelGroup()
-								.addComponent(wrongData).addComponent(addPatient).addComponent(mainMenuButton))
+								.addComponent(wrongData).addComponent(addPatient).addComponent(adminMainMenuButton))
 						);
 			}
 			
@@ -214,7 +259,7 @@ public class NeurologyClinic extends Clinic{
 										.addComponent(addProfession, 10, 10, Short.MAX_VALUE).addComponent(professionCB, 10, 10, Short.MAX_VALUE).addComponent(addDateOfEmployment, 10, 10, Short.MAX_VALUE).addComponent(dateOfEmploymentField, 10, 10, Short.MAX_VALUE)))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(supportStaffPanelLayout.createSequentialGroup()
-								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addSupportStaff).addComponent(mainMenuButton))
+								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addSupportStaff).addComponent(adminMainMenuButton))
 						);
 				
 				supportStaffPanelLayout.setVerticalGroup(supportStaffPanelLayout.createSequentialGroup()
@@ -231,40 +276,93 @@ public class NeurologyClinic extends Clinic{
 										.addComponent(surnameField, 20, 20, Short.MAX_VALUE).addComponent(dateOfBirthField, 20, 20, Short.MAX_VALUE).addComponent(cityField, 20, 20, Short.MAX_VALUE).addComponent(streetAndHouseNumberField, 20, 20, Short.MAX_VALUE).addComponent(sexCB, 20, 20, Short.MAX_VALUE).addComponent(dateOfEmploymentField, 20, 20, Short.MAX_VALUE)))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(supportStaffPanelLayout.createParallelGroup()
-								.addComponent(wrongData).addComponent(addSupportStaff).addComponent(mainMenuButton))
+								.addComponent(wrongData).addComponent(addSupportStaff).addComponent(adminMainMenuButton))
 						);
 				
 			}
 			
 		});
 		
-		mainMenuButton.addActionListener(new ActionListener() {
+		adminMainMenuButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				cl.show(panel, "Main Panel");
+				cl.show(panel, "Admin Main Panel");
 				clearTextFields();
-				System.out.println("usuniêto");
 				wrongData.setVisible(false);
 			}
 		});
 		
-		GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
-		mainPanel.setLayout(mainPanelLayout);
-		mainPanelLayout.setAutoCreateGaps(true);
-		mainPanelLayout.setAutoCreateContainerGaps(true);
-		mainPanel.setBackground(new Color(228, 228, 228));
+		// Admin Main Menu
+		adminTitle = new JLabel("Administrator");
+		adminTitle.setFont(new Font("Arial", Font.BOLD, 37));
 		
-		mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup()
+		GroupLayout adminMainPanelLayout = new GroupLayout(adminMainPanel);
+		adminMainPanel.setLayout(adminMainPanelLayout);
+		adminMainPanelLayout.setAutoCreateGaps(true);
+		adminMainPanelLayout.setAutoCreateContainerGaps(true);
+		adminMainPanel.setBackground(new Color(228, 228, 228));
+		
+		adminMainPanelLayout.setHorizontalGroup(adminMainPanelLayout.createParallelGroup()
+				.addComponent(adminTitle)
+				.addGroup(adminMainPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						.addGap(10, 10, Short.MAX_VALUE)
+						.addComponent(addPatientButton)
+						.addComponent(addDoctorButton)
+						.addComponent(addSupportStaffButton)
+						.addComponent(signOutButton))
+				);
+		
+		adminMainPanelLayout.setVerticalGroup(adminMainPanelLayout.createSequentialGroup()
+				.addComponent(adminTitle)
+				.addGap(10, 10, Short.MAX_VALUE)
 				.addComponent(addPatientButton)
 				.addComponent(addDoctorButton)
 				.addComponent(addSupportStaffButton)
+				.addGap(10, 10, Short.MAX_VALUE)
+				.addComponent(signOutButton)
 				);
 		
-		mainPanelLayout.setVerticalGroup(mainPanelLayout.createSequentialGroup()
-				.addComponent(addPatientButton)
-				.addComponent(addDoctorButton)
-				.addComponent(addSupportStaffButton)
+		// Sign in panel
+		signInTitle = new JLabel("Sign in");
+		signInTitle.setFont(new Font("Arial", Font.BOLD, 37));
+		login = new JLabel("Login:");
+		loginField = new JTextField();
+		password = new JLabel("Password:");
+		passwordField = new JTextField();
+		
+		GroupLayout signInPanelLayout = new GroupLayout(signInPanel);
+		signInPanel.setLayout(signInPanelLayout);
+		signInPanelLayout.setAutoCreateGaps(true);
+		signInPanelLayout.setAutoCreateContainerGaps(true);
+		signInPanel.setBackground(new Color(228, 228, 228));
+		
+		signInPanelLayout.setHorizontalGroup(signInPanelLayout.createParallelGroup()
+				.addComponent(signInTitle)
+				.addGap(30, 30, Short.MAX_VALUE)
+				.addGroup(signInPanelLayout.createParallelGroup()
+						.addGroup(signInPanelLayout.createSequentialGroup()
+								.addGap(10, 10, Short.MAX_VALUE).addComponent(login, 10, 10, 80).addComponent(loginField, 10, 10, Short.MAX_VALUE).addGap(10, 10, Short.MAX_VALUE))
+						.addGroup(signInPanelLayout.createSequentialGroup()
+								.addGap(10, 10, Short.MAX_VALUE).addComponent(password, 10, 10, 80).addComponent(passwordField, 10, 10, Short.MAX_VALUE).addGap(10, 10, Short.MAX_VALUE)))
+				.addGap(30, 30, Short.MAX_VALUE)
+				.addGroup(signInPanelLayout.createSequentialGroup()
+						.addGap(30, 30, Short.MAX_VALUE).addComponent(wrongData).addComponent(signInButton))
 				);
+		
+		signInPanelLayout.setVerticalGroup(signInPanelLayout.createSequentialGroup()
+				.addComponent(signInTitle)
+				.addGap(30, 30, Short.MAX_VALUE)
+				.addGroup(signInPanelLayout.createParallelGroup()
+						.addGroup(signInPanelLayout.createSequentialGroup()
+							.addComponent(login, 10, 10, 25).addComponent(password, 10, 10, 25))
+						.addGroup(signInPanelLayout.createSequentialGroup()
+							.addComponent(loginField, 10, 10, 25).addComponent(passwordField, 10, 10, 25)))
+				.addGap(30, 30, Short.MAX_VALUE)
+				.addGroup(signInPanelLayout.createParallelGroup()
+						.addComponent(wrongData).addComponent(signInButton))
+				);
+		
+		
 		
 		// Doctor Panel
 		addDoctorTitle = new JLabel("Add doctor");
@@ -295,10 +393,6 @@ public class NeurologyClinic extends Clinic{
 		specialtyCB = new JComboBox(clinic.selectSpecialty().toArray());
 		addDateOfEmployment = new JLabel("Date of employment (yyyy-mm-dd):");
 		dateOfEmploymentField = new JTextField();
-		
-		wrongData = new JLabel("Wrong data! Check everything.");
-		wrongData.setForeground(Color.RED);
-		wrongData.setVisible(false);
 		
 		
 		//Add doctor button in add doctor panel
@@ -369,7 +463,7 @@ public class NeurologyClinic extends Clinic{
 		
 	}
 	
-	// Clear text fields in Add doctor panel
+	// Clear text fields panel
 	public void clearTextFields() {
 		nameField.setText("");
 		surnameField.setText("");
