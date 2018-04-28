@@ -6,8 +6,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NeurologyClinic extends Clinic{
 	
@@ -244,7 +242,8 @@ public class NeurologyClinic extends Clinic{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panel, "Main Panel");
-				clearAddDoctorTextFields();
+				clearTextFields();
+				System.out.println("usuniêto");
 				wrongData.setVisible(false);
 			}
 		});
@@ -371,23 +370,20 @@ public class NeurologyClinic extends Clinic{
 	}
 	
 	// Clear text fields in Add doctor panel
-	public void clearAddDoctorTextFields() {
-		List<JTextField> addDoctorFieldsList = new ArrayList<JTextField>();
-		addDoctorFieldsList.add(nameField);
-		addDoctorFieldsList.add(surnameField);
-		addDoctorFieldsList.add(personalNumberField);
-		addDoctorFieldsList.add(dateOfBirthField);
-		addDoctorFieldsList.add(cityField);
-		addDoctorFieldsList.add(postalCodeField);
-		addDoctorFieldsList.add(streetAndHouseNumberField);
-		addDoctorFieldsList.add(phoneField);
-		addDoctorFieldsList.add(licenceNumberField);
-		addDoctorFieldsList.add(dateOfEmploymentField);
+	public void clearTextFields() {
+		nameField.setText("");
+		surnameField.setText("");
+		personalNumberField.setText("");
+		dateOfBirthField.setText("");
+		cityField.setText("");
+		postalCodeField.setText("");
+		streetAndHouseNumberField.setText("");
+		phoneField.setText("");
+		licenceNumberField.setText("");
+		dateOfEmploymentField.setText("");
 		
-		for (int i = 0; i<addDoctorFieldsList.size(); i++) {
-			addDoctorFieldsList.get(i).setText("");
-			i++;
-		}
+		dateOfRegistrationField.setText("");
+		
 	}
 	
 
@@ -395,8 +391,7 @@ public class NeurologyClinic extends Clinic{
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				NeurologyClinic a = new NeurologyClinic();
-				a.clearAddDoctorTextFields();
+				new NeurologyClinic();
 			}
 		});
 	}
