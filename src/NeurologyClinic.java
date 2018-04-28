@@ -5,7 +5,7 @@ import clinic.Clinic;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 
 public class NeurologyClinic extends Clinic{
 	
@@ -16,6 +16,7 @@ public class NeurologyClinic extends Clinic{
 	JPanel panel = new JPanel();
 	JPanel signInPanel = new JPanel();
 	JPanel adminMainPanel = new JPanel();
+	JPanel supportStaffMainPanel = new JPanel();
 	JPanel doctorPanel = new JPanel();
 	JPanel patientPanel = new JPanel();
 	JPanel supportStaffPanel = new JPanel();
@@ -36,6 +37,7 @@ public class NeurologyClinic extends Clinic{
 	JTextField passwordField;
 	
 	JLabel adminTitle;
+	JLabel supportStaffTitle;
 	
 	JLabel addDoctorTitle;
 	JLabel addName;
@@ -76,14 +78,17 @@ public class NeurologyClinic extends Clinic{
 	JComboBox professionCB;
 	
 	JButton adminMainMenuButton = new JButton("Main Menu");
+	JButton supportStaffMainMenuButton = new JButton("Main Menu");
+	
 	CardLayout cl = new CardLayout();
 	
 	public NeurologyClinic() {
 		panel.setLayout(cl);
-		doctorPanel.add(adminMainMenuButton);
+		//doctorPanel.add(adminMainMenuButton);
 		
 		panel.add(signInPanel, "Sign in Panel");
 		panel.add(adminMainPanel, "Admin Main Panel");
+		panel.add(supportStaffMainPanel, "Support Staff Main Panel");
 		panel.add(doctorPanel, "Adding Doctor Panel");
 		panel.add(patientPanel, "Adding Patient Panel");
 		panel.add(supportStaffPanel, "Adding Health Staff Panel");
@@ -100,7 +105,13 @@ public class NeurologyClinic extends Clinic{
 				 String login = loginField.getText();
 	             String password = passwordField.getText();
 	                if(login.equals("admin") && password.equals("admin")) {
+	                	paintAdminMainPanel();
 	                	cl.show(panel, "Admin Main Panel");
+	                	wrongData.setVisible(false);
+	                }
+	                else if(login.equals("90101711575") && password.equals("12345")) {
+	                	paintSupportStaffMainPanel();
+	                	cl.show(panel, "Support Staff Main Panel");
 	                	wrongData.setVisible(false);
 	                }
 	                else {
@@ -120,6 +131,7 @@ public class NeurologyClinic extends Clinic{
 			}
 			
 		});
+		
 		
 		addDoctorButton.addActionListener(new ActionListener() {
 			@Override
@@ -205,7 +217,7 @@ public class NeurologyClinic extends Clinic{
 								.addComponent(addDateOfRegistration, 10, 10, Short.MAX_VALUE).addGap(10,10,10).addComponent(dateOfRegistrationField, 10, 10, Short.MAX_VALUE).addGap(247, 247, Short.MAX_VALUE))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(patientPanelLayout.createSequentialGroup()
-								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addPatient).addComponent(adminMainMenuButton))
+								.addComponent(wrongData).addGap(100, 100, Short.MAX_VALUE).addComponent(addPatient).addComponent(supportStaffMainMenuButton))
 						);
 				
 				patientPanelLayout.setVerticalGroup(patientPanelLayout.createSequentialGroup()
@@ -224,7 +236,7 @@ public class NeurologyClinic extends Clinic{
 								.addComponent(addDateOfRegistration, 20, 20, 23).addComponent(dateOfRegistrationField, 10, 10, 23))
 						.addGap(30, 30, Short.MAX_VALUE)
 						.addGroup(patientPanelLayout.createParallelGroup()
-								.addComponent(wrongData).addComponent(addPatient).addComponent(adminMainMenuButton))
+								.addComponent(wrongData).addComponent(addPatient).addComponent(supportStaffMainMenuButton))
 						);
 			}
 			
@@ -292,35 +304,19 @@ public class NeurologyClinic extends Clinic{
 			}
 		});
 		
-		// Admin Main Menu
-		adminTitle = new JLabel("Administrator");
-		adminTitle.setFont(new Font("Arial", Font.BOLD, 37));
+		supportStaffMainMenuButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cl.show(panel, "Support Staff Main Panel");
+				clearTextFields();
+				wrongData.setVisible(false);
+			}
+			
+		});
 		
-		GroupLayout adminMainPanelLayout = new GroupLayout(adminMainPanel);
-		adminMainPanel.setLayout(adminMainPanelLayout);
-		adminMainPanelLayout.setAutoCreateGaps(true);
-		adminMainPanelLayout.setAutoCreateContainerGaps(true);
-		adminMainPanel.setBackground(new Color(228, 228, 228));
 		
-		adminMainPanelLayout.setHorizontalGroup(adminMainPanelLayout.createParallelGroup()
-				.addComponent(adminTitle)
-				.addGroup(adminMainPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-						.addGap(10, 10, Short.MAX_VALUE)
-						.addComponent(addPatientButton)
-						.addComponent(addDoctorButton)
-						.addComponent(addSupportStaffButton)
-						.addComponent(signOutButton))
-				);
 		
-		adminMainPanelLayout.setVerticalGroup(adminMainPanelLayout.createSequentialGroup()
-				.addComponent(adminTitle)
-				.addGap(10, 10, Short.MAX_VALUE)
-				.addComponent(addPatientButton)
-				.addComponent(addDoctorButton)
-				.addComponent(addSupportStaffButton)
-				.addGap(10, 10, Short.MAX_VALUE)
-				.addComponent(signOutButton)
-				);
 		
 		// Sign in panel
 		signInTitle = new JLabel("Sign in");
@@ -411,6 +407,13 @@ public class NeurologyClinic extends Clinic{
 			}
 		});
 		
+
+		// Patient Panel
+		addPatientTitle = new JLabel("Add patient");
+		addPatientTitle.setFont(new Font("Arial", Font.BOLD, 37));
+		addDateOfRegistration = new JLabel("Date of registration (yyyy-mm-dd):");
+		dateOfRegistrationField = new JTextField();
+		
 		//Add patient button in add patient panel
 		addPatient.addActionListener(new ActionListener() {
 
@@ -425,6 +428,13 @@ public class NeurologyClinic extends Clinic{
 					}
 			}
 		});
+		
+
+		// Support Staff Panel
+		addSupportStaffTitle = new JLabel("Add Health Staff");
+		addSupportStaffTitle.setFont(new Font("Arial", Font.BOLD, 37));
+		addProfession = new JLabel("Profession:");
+		professionCB = new JComboBox(clinic.selectProfession().toArray());
 		
 		//Add support staff button in add support staff
 		addSupportStaff.addActionListener(new ActionListener() {
@@ -441,18 +451,6 @@ public class NeurologyClinic extends Clinic{
 					}
 			}
 		});
-		
-		// Patient Panel
-		addPatientTitle = new JLabel("Add patient");
-		addPatientTitle.setFont(new Font("Arial", Font.BOLD, 37));
-		addDateOfRegistration = new JLabel("Date of registration (yyyy-mm-dd):");
-		dateOfRegistrationField = new JTextField();
-		
-		// Support Staff Panel
-		addSupportStaffTitle = new JLabel("Add Health Staff");
-		addSupportStaffTitle.setFont(new Font("Arial", Font.BOLD, 37));
-		addProfession = new JLabel("Profession:");
-		professionCB = new JComboBox(clinic.selectProfession().toArray());
 		
 		clinic.closeConnection();
 		frame.setBounds(300, 200, 930, 400);
@@ -480,7 +478,68 @@ public class NeurologyClinic extends Clinic{
 		
 	}
 	
-
+	// Admin Main Menu
+	public void paintAdminMainPanel() {
+		supportStaffMainPanel.removeAll();
+		
+		adminTitle = new JLabel("Administrator");
+		adminTitle.setFont(new Font("Arial", Font.BOLD, 37));
+		
+		GroupLayout adminMainPanelLayout = new GroupLayout(adminMainPanel);
+		adminMainPanel.setLayout(adminMainPanelLayout);
+		adminMainPanelLayout.setAutoCreateGaps(true);
+		adminMainPanelLayout.setAutoCreateContainerGaps(true);
+		adminMainPanel.setBackground(new Color(228, 228, 228));
+		
+		adminMainPanelLayout.setHorizontalGroup(adminMainPanelLayout.createParallelGroup()
+				.addComponent(adminTitle)
+				.addGroup(adminMainPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						.addGap(10, 10, Short.MAX_VALUE)
+						.addComponent(addDoctorButton)
+						.addComponent(addSupportStaffButton)
+						.addComponent(signOutButton))
+				);
+		
+		adminMainPanelLayout.setVerticalGroup(adminMainPanelLayout.createSequentialGroup()
+				.addComponent(adminTitle)
+				.addGap(10, 10, Short.MAX_VALUE)
+				.addComponent(addDoctorButton)
+				.addComponent(addSupportStaffButton)
+				.addGap(10, 10, Short.MAX_VALUE)
+				.addComponent(signOutButton)
+				);
+	}
+	
+	// Support Staff Main Menu
+	public void paintSupportStaffMainPanel() {
+		adminMainPanel.removeAll();		
+		
+		supportStaffTitle = new JLabel("Health Staff");
+		supportStaffTitle.setFont(new Font("Arial", Font.BOLD, 37));
+				
+		GroupLayout supportStaffMainPanelLayout = new GroupLayout(supportStaffMainPanel);
+		supportStaffMainPanel.setLayout(supportStaffMainPanelLayout);
+		supportStaffMainPanelLayout.setAutoCreateGaps(true);
+		supportStaffMainPanelLayout.setAutoCreateContainerGaps(true);
+		supportStaffMainPanel.setBackground(new Color(228, 228, 228));
+		
+		supportStaffMainPanelLayout.setHorizontalGroup(supportStaffMainPanelLayout.createParallelGroup()
+				.addComponent(supportStaffTitle)
+				.addGroup(supportStaffMainPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+						.addGap(10, 10, Short.MAX_VALUE)
+						.addComponent(addPatientButton)
+						.addComponent(signOutButton))
+				);
+		
+		supportStaffMainPanelLayout.setVerticalGroup(supportStaffMainPanelLayout.createSequentialGroup()
+				.addComponent(supportStaffTitle)
+				.addGap(10, 10, Short.MAX_VALUE)
+				.addComponent(addPatientButton)
+				.addGap(10, 10, Short.MAX_VALUE)
+				.addComponent(signOutButton)
+				);		
+	}
+			
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
