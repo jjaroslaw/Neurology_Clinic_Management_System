@@ -1,10 +1,12 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import clinic.Clinic;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 //import java.sql.ResultSet;
 
 public class NeurologyClinic extends Clinic{
@@ -20,6 +22,7 @@ public class NeurologyClinic extends Clinic{
 	JPanel doctorPanel = new JPanel();
 	JPanel patientPanel = new JPanel();
 	JPanel supportStaffPanel = new JPanel();
+	JPanel showDoctorsPanel = new JPanel();
 	
 	JButton signInButton = new JButton("Sign in");
 	JButton signOutButton = new JButton("Sign out");
@@ -30,6 +33,9 @@ public class NeurologyClinic extends Clinic{
 	JButton addSupportStaffButton = new JButton("Add health staff to Database");
 	JButton addSupportStaff = new JButton("Add health staff");
 	
+	// Health Staff Main Menu
+	JButton showDoctors = new JButton("Show doctors");
+	
 	JLabel signInTitle;
 	JLabel login;
 	JTextField loginField;
@@ -38,6 +44,7 @@ public class NeurologyClinic extends Clinic{
 	
 	JLabel adminTitle;
 	JLabel supportStaffTitle;
+	JLabel showDoctorsTitle;
 	
 	JLabel addDoctorTitle;
 	JLabel addName;
@@ -82,6 +89,11 @@ public class NeurologyClinic extends Clinic{
 	
 	CardLayout cl = new CardLayout();
 	
+	JTable doctorsTable;
+	String[] doctorsTableColumnNames = {"Surname", "Name", "Date of birth", "Country of birth", "City", "Postal code", "Address", "Phone", "Sex", "Licence number", "Specialty", "Date of employment"};
+	DefaultTableModel model;
+	JScrollPane doctorTableScroll;
+	
 	public NeurologyClinic() {
 		panel.setLayout(cl);
 		//doctorPanel.add(adminMainMenuButton);
@@ -92,6 +104,7 @@ public class NeurologyClinic extends Clinic{
 		panel.add(doctorPanel, "Adding Doctor Panel");
 		panel.add(patientPanel, "Adding Patient Panel");
 		panel.add(supportStaffPanel, "Adding Health Staff Panel");
+		panel.add(showDoctorsPanel, "Show doctors Panel");
 		cl.show(panel, "Sign in Panel");
 		
 		wrongData = new JLabel("Wrong data! Check everything.");
@@ -109,7 +122,7 @@ public class NeurologyClinic extends Clinic{
 	                	cl.show(panel, "Admin Main Panel");
 	                	wrongData.setVisible(false);
 	                }
-	                else if(login.equals("90101711575") && password.equals("12345")) {
+	                else if(login.equals("12345") && password.equals("12345")) {
 	                	paintSupportStaffMainPanel();
 	                	cl.show(panel, "Support Staff Main Panel");
 	                	wrongData.setVisible(false);
@@ -316,8 +329,6 @@ public class NeurologyClinic extends Clinic{
 		});
 		
 		
-		
-		
 		// Sign in panel
 		signInTitle = new JLabel("Sign in");
 		signInTitle.setFont(new Font("Arial", Font.BOLD, 37));
@@ -452,6 +463,56 @@ public class NeurologyClinic extends Clinic{
 			}
 		});
 		
+		// Show doctor panel
+		showDoctorsTitle = new JLabel("Doctors");
+		showDoctorsTitle.setFont(new Font("Arial", Font.BOLD, 37));
+		model = new DefaultTableModel();
+		model.setColumnIdentifiers(doctorsTableColumnNames);
+		doctorsTable = new JTable();
+		doctorsTable.setModel(model); 
+		doctorsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		doctorsTable.setFillsViewportHeight(true);
+		doctorTableScroll = new JScrollPane(doctorsTable);
+		doctorTableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		doctorTableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		for (int i = 0; i<clinic.selectDoctors().size(); i++) {
+			model.addRow(clinic.selectDoctors().get(i));
+		}
+		
+		// Show doctors in support staff
+		showDoctors.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cl.show(panel, "Show doctors Panel");
+				GroupLayout showDoctorsPanelLayout = new GroupLayout(showDoctorsPanel);
+				showDoctorsPanel.setLayout(showDoctorsPanelLayout);
+				showDoctorsPanelLayout.setAutoCreateGaps(true);
+				showDoctorsPanelLayout.setAutoCreateContainerGaps(true);
+				showDoctorsPanel.setBackground(new Color(228, 228, 228));
+				
+				showDoctorsPanelLayout.setHorizontalGroup(showDoctorsPanelLayout.createParallelGroup()
+						.addComponent(showDoctorsTitle)
+						.addGap(30, 30, Short.MAX_VALUE)
+						.addComponent(doctorTableScroll)
+						.addGap(30, 30, Short.MAX_VALUE)
+						.addGroup(showDoctorsPanelLayout.createSequentialGroup()
+								.addGap(30, 30, Short.MAX_VALUE).addComponent(supportStaffMainMenuButton))
+						);
+				
+				showDoctorsPanelLayout.setVerticalGroup(showDoctorsPanelLayout.createSequentialGroup()
+						.addComponent(showDoctorsTitle)
+						.addGap(30, 30, Short.MAX_VALUE)
+						.addComponent(doctorTableScroll)
+						.addGap(30, 30, Short.MAX_VALUE)
+						.addGroup(showDoctorsPanelLayout.createParallelGroup()
+								.addComponent(supportStaffMainMenuButton))
+						);
+			}
+			
+		});
+		
 		clinic.closeConnection();
 		frame.setBounds(300, 200, 930, 400);
 		frame.setMinimumSize(new Dimension(930, 400));
@@ -528,6 +589,7 @@ public class NeurologyClinic extends Clinic{
 				.addGroup(supportStaffMainPanelLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
 						.addGap(10, 10, Short.MAX_VALUE)
 						.addComponent(addPatientButton)
+						.addComponent(showDoctors)
 						.addComponent(signOutButton))
 				);
 		
@@ -535,6 +597,7 @@ public class NeurologyClinic extends Clinic{
 				.addComponent(supportStaffTitle)
 				.addGap(10, 10, Short.MAX_VALUE)
 				.addComponent(addPatientButton)
+				.addComponent(showDoctors)
 				.addGap(10, 10, Short.MAX_VALUE)
 				.addComponent(signOutButton)
 				);		

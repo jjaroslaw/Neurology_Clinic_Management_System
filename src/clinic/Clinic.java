@@ -190,4 +190,45 @@ public class Clinic {
 			}
 			return professionList;
 		}	
+		
+		// Specialty list
+		public List<Object[]> selectDoctors(){
+			List<Object[]> doctorsList = new ArrayList<Object[]>();
+			try {
+				ResultSet result = stat.executeQuery("select surname, name, personal_number, date_of_birth, city, postal_code, street_and_house_number, phone, sex, licence_number, specialty, date_of_doctor_employment from employees_list where licence_number IS NOT NULL order by surname;");
+				String surname;
+				String name;
+				String personal_number;
+				String date_of_birth;
+				String city;
+				String postal_code;
+				String street_and_house_number;
+				String phone;
+				String sex;
+				String licence_number;
+				String specialty;
+				String date_of_doctor_employment;
+				while(result.next()) {
+					surname = result.getString("surname");
+					name = result.getString("name");
+					personal_number = result.getString("personal_number");
+					date_of_birth = result.getString("date_of_birth");
+					city = result.getString("city");
+					postal_code = result.getString("postal_code");
+					street_and_house_number = result.getString("street_and_house_number");
+					phone = result.getString("phone");
+					sex = result.getString("sex");
+					licence_number = result.getString("licence_number");
+					specialty = result.getString("specialty");
+					date_of_doctor_employment = result.getString("date_of_doctor_employment");
+					
+					doctorsList.add(new Object[]{surname, name, personal_number, date_of_birth, city, postal_code, street_and_house_number, phone, sex, licence_number, specialty, date_of_doctor_employment});
+				}
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return doctorsList;
+		}	
 }
