@@ -6,8 +6,6 @@ import clinic.Clinic;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
-//import java.sql.ResultSet;
 
 public class NeurologyClinic extends Clinic{
 	
@@ -56,7 +54,7 @@ public class NeurologyClinic extends Clinic{
 	JLabel addDateOfBirth;
 	JTextField dateOfBirthField;
 	JLabel addCountryOfBirth;
-	JComboBox countryOfBirthCB;
+	JComboBox<Object> countryOfBirthCB;
 	JLabel addCity;
 	JTextField cityField;
 	JLabel addPostalCode;
@@ -66,11 +64,11 @@ public class NeurologyClinic extends Clinic{
 	JLabel addPhone;
 	JTextField phoneField;
 	JLabel addSex;
-	JComboBox sexCB;
+	JComboBox<Object> sexCB;
 	JLabel addLicenceNumber;
 	JTextField licenceNumberField;
 	JLabel addSpecialty;
-	JComboBox specialtyCB;
+	JComboBox<Object> specialtyCB;
 	JLabel addDateOfEmployment;
 	JTextField dateOfEmploymentField;
 	JLabel wrongData;
@@ -82,7 +80,7 @@ public class NeurologyClinic extends Clinic{
 	
 	JLabel addSupportStaffTitle;
 	JLabel addProfession;
-	JComboBox professionCB;
+	JComboBox<Object> professionCB;
 	
 	JButton adminMainMenuButton = new JButton("Main Menu");
 	JButton supportStaffMainMenuButton = new JButton("Main Menu");
@@ -383,7 +381,7 @@ public class NeurologyClinic extends Clinic{
 		addDateOfBirth = new JLabel("Date of birth (yyyy-mm-dd):");
 		dateOfBirthField = new JTextField();
 		addCountryOfBirth = new JLabel("Country of birth:");
-		countryOfBirthCB = new JComboBox(clinic.selectCountries().toArray());
+		countryOfBirthCB = new JComboBox<Object>(clinic.selectCountries().toArray());
 		addCity = new JLabel("City:");
 		cityField = new JTextField();
 		addPostalCode = new JLabel("Postal code (xx-xxx):");
@@ -393,11 +391,11 @@ public class NeurologyClinic extends Clinic{
 		addPhone = new JLabel("Phone number:");
 		phoneField = new JTextField();
 		addSex = new JLabel("Sex:");
-		sexCB = new JComboBox(clinic.selectSex().toArray());
+		sexCB = new JComboBox<Object>(clinic.selectSex().toArray());
 		addLicenceNumber = new JLabel("Licence number:");
 		licenceNumberField = new JTextField();
 		addSpecialty = new JLabel("Specialty:");
-		specialtyCB = new JComboBox(clinic.selectSpecialty().toArray());
+		specialtyCB = new JComboBox<Object>(clinic.selectSpecialty().toArray());
 		addDateOfEmployment = new JLabel("Date of employment (yyyy-mm-dd):");
 		dateOfEmploymentField = new JTextField();
 		
@@ -445,7 +443,7 @@ public class NeurologyClinic extends Clinic{
 		addSupportStaffTitle = new JLabel("Add Health Staff");
 		addSupportStaffTitle.setFont(new Font("Arial", Font.BOLD, 37));
 		addProfession = new JLabel("Profession:");
-		professionCB = new JComboBox(clinic.selectProfession().toArray());
+		professionCB = new JComboBox<Object>(clinic.selectProfession().toArray());
 		
 		//Add support staff button in add support staff
 		addSupportStaff.addActionListener(new ActionListener() {
@@ -472,6 +470,7 @@ public class NeurologyClinic extends Clinic{
 		doctorsTable.setModel(model); 
 		doctorsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		doctorsTable.setFillsViewportHeight(true);
+		doctorsTable.setEnabled(false);
 		doctorTableScroll = new JScrollPane(doctorsTable);
 		doctorTableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		doctorTableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
